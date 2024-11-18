@@ -73,6 +73,10 @@ Using named functions improves readability and debugging:
   }
 
   useEffect(logEffect, []);
+
+  // or 
+
+  React.useEffect(logEffect, []);
 ```
 
 #### Named Function in `useCallback`:
@@ -83,6 +87,10 @@ Using named functions improves readability and debugging:
   }
 
   const handler = useCallback(memoizedHandler, []);
+
+  // or
+
+  const handler = React.useCallback(memoizedHandler, []);
 ```
 
 #### Named Function in `useMemo`:
@@ -93,6 +101,10 @@ Using named functions improves readability and debugging:
   }
 
   const memoizedValue = useMemo(computeExpensiveValue, [dependencies]);
+
+  // or
+
+  const memoizedValue = React.useMemo(computeExpensiveValue, [dependencies]);
 ```
 
 - - -
@@ -107,6 +119,12 @@ These examples will trigger an ESLint error:
   useEffect(() => {
     console.log("Effect executed");
   }, []); // Error: Only named functions are allowed in useEffect.
+
+  // or 
+
+  React.useEffect(() => {
+    console.log("Effect executed");
+  }, []); // Error: Only named functions are allowed in useEffect.
 ```
 
 #### Anonymous Function in `useCallback`:
@@ -115,12 +133,22 @@ These examples will trigger an ESLint error:
   const handler = useCallback(() => {
     console.log("Handler executed");
   }, []); // Error: Only named functions are allowed in useCallback.
+
+  // or 
+
+  const handler = React.useCallback(() => {
+    console.log("Handler executed");
+  }, []); // Error: Only named functions are allowed in useCallback.
 ```
 
 #### Anonymous Function in `useMemo`:
 
 ```
   const memoizedValue = useMemo(() => someHeavyCalculation(), [dependencies]); // Error: Only named functions are allowed in useMemo.
+
+  // or
+
+  const memoizedValue = React.useMemo(() => someHeavyCalculation(), [dependencies]); // Error: Only named functions are allowed in useMemo.
 ```
 
 - - -
