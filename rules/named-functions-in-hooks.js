@@ -16,17 +16,15 @@ module.exports = {
 
     return {
       CallExpression(node) {
-        // Check if the function being called is a React hook
         const { callee } = node;
-
         let hookName = null;
 
-        // Case 1: Importing hooks directly (e.g., useEffect)
+        // Case 1: Directly imported hooks (e.g., useEffect)
         if (callee.type === "Identifier" && reactHooks.includes(callee.name)) {
           hookName = callee.name;
         }
 
-        // Case 2: Accessing hooks via React namespace (e.g., React.useEffect)
+        // Case 2: Namespace imports (e.g., React.useEffect)
         if (
           callee.type === "MemberExpression" &&
           callee.object.type === "Identifier" &&
@@ -38,21 +36,27 @@ module.exports = {
         }
 
         if (hookName) {
-          // Check if the first argument is an anonymous function
           const firstArg = node.arguments[0];
+
+          // Ensure the first argument is a function
           if (
             firstArg &&
-            (firstArg.type === "ArrowFunctionExpression" ||
-              firstArg.type === "FunctionExpression") &&
-            !firstArg.id // Anonymous functions have no `id`
+            (firstArg.type === "ArrowFunctionExpression" || firstArg.type === "FunctionExpression")
           ) {
-            context.report({
-              node: firstArg,
-              messageId: "useNamedFunctions",
-              data: {
-                hook: hookName,
-              },
-            });
+            const isAnonymousFunction = !firstArg.id;
+
+            // Correctly handle function expressions with names
+            if (firstArg.type === "FunctionExpression" && firstArg.id) {
+              return; // Valid named function; no error
+            }
+
+            if (isAnonymousFunction) {
+              context.report({
+                node: firstArg,
+                messageId: "useNamedFunctions",
+                data: { hook: hookName },
+              });
+            }
           }
         }
       },

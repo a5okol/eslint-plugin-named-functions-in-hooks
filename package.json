@@ -1,6 +1,6 @@
 {
   "name": "eslint-plugin-named-functions-in-hooks",
-  "version": "1.0.4",
+  "version": "1.0.6",
   "description": "An ESLint plugin to enforce named functions in React hooks like useMemo, useCallback, and useEffect.",
   "main": "index.js",
   "keywords": ["eslint", "eslint-plugin", "react-hooks", "eslint-rule"],
